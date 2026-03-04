@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -55,18 +56,19 @@ export default async function Home() {
       <div className="mx-auto max-w-3xl space-y-8">
 
         {/* Header */}
-        <header className="pt-4">
-          <div className="flex items-end gap-3">
-            <h1 className="text-4xl font-black tracking-tighter uppercase text-white">
+        <header className="pt-4 flex items-start justify-between">
+          <div>
+            <h1 className="text-4xl font-black tracking-tighter uppercase text-[var(--text)]">
               Fitness<span className="text-orange-500">.</span>
             </h1>
+            <p className="mt-1 text-[var(--text-40)] tracking-wide uppercase text-xs">Track your lifts. See your progress.</p>
           </div>
-          <p className="mt-1 text-sm text-white/40 tracking-wide uppercase text-xs">Track your lifts. See your progress.</p>
+          <ThemeToggle />
         </header>
 
         {/* Heatmap */}
         <section className="space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Consistency</h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Consistency</h2>
           <WorkoutHeatmap sessionDates={sessionDates} />
         </section>
 
@@ -77,9 +79,9 @@ export default async function Home() {
             { label: "Sets logged", value: totalSets.toLocaleString() },
             { label: "Total volume", value: `${fmtVolume(totalVolume)} kg` },
           ].map(({ label, value }) => (
-            <div key={label} className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-4">
+            <div key={label} className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4">
               <div className="text-2xl font-black text-orange-500 tracking-tight">{value}</div>
-              <div className="mt-1 text-xs text-white/40 uppercase tracking-wider">{label}</div>
+              <div className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">{label}</div>
             </div>
           ))}
         </section>
@@ -87,14 +89,14 @@ export default async function Home() {
         {/* Quick start */}
         <section className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Quick Start</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Quick Start</h2>
             <Link href="/templates" className="text-xs text-orange-500/70 hover:text-orange-400 uppercase tracking-wider">
               All templates →
             </Link>
           </div>
           {templates.length === 0 ? (
-            <div className="rounded-xl border border-white/[0.07] p-6 text-center">
-              <p className="text-white/40 text-sm">No templates yet.</p>
+            <div className="rounded-xl border border-[var(--border)] p-6 text-center">
+              <p className="text-[var(--text-40)] text-sm">No templates yet.</p>
               <Link href="/templates/new" className="mt-2 inline-block text-sm text-orange-500 hover:text-orange-400">
                 Create your first template →
               </Link>
@@ -103,9 +105,9 @@ export default async function Home() {
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {templates.map((t) => (
                 <Link key={t.id} href={`/templates/${t.id}`}
-                  className="group rounded-xl border border-white/[0.07] bg-white/[0.03] p-3 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all">
+                  className="group rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all">
                   <div className="font-semibold text-sm truncate group-hover:text-orange-400 transition-colors">{t.name}</div>
-                  <div className="mt-1 text-xs text-white/35">
+                  <div className="mt-1 text-xs text-[var(--text-35)]">
                     {t.exercises.length} exercise{t.exercises.length !== 1 ? "s" : ""}
                   </div>
                 </Link>
@@ -117,29 +119,29 @@ export default async function Home() {
         {/* Recent sessions */}
         <section className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Recent Sessions</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Recent Sessions</h2>
             <Link href="/history" className="text-xs text-orange-500/70 hover:text-orange-400 uppercase tracking-wider">
               Full history →
             </Link>
           </div>
           {recentSessions.length === 0 ? (
-            <div className="rounded-xl border border-white/[0.07] p-6 text-center">
-              <p className="text-white/40 text-sm">No sessions yet — start a workout to begin tracking.</p>
+            <div className="rounded-xl border border-[var(--border)] p-6 text-center">
+              <p className="text-[var(--text-40)] text-sm">No sessions yet — start a workout to begin tracking.</p>
             </div>
           ) : (
             <div className="space-y-2">
               {recentSessions.map((s) => (
                 <Link key={s.id} href={`/sessions/${s.id}`}
-                  className="flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.03] p-3 hover:border-orange-500/30 hover:bg-orange-500/5 transition-all group">
+                  className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 hover:border-orange-500/30 hover:bg-orange-500/5 transition-all group">
                   <div className="min-w-0">
-                    <div className="font-medium text-sm truncate group-hover:text-white transition-colors">{sessionTitle(s)}</div>
-                    <div className="mt-0.5 text-xs text-white/35">
+                    <div className="font-medium text-sm truncate group-hover:text-[var(--text)] transition-colors">{sessionTitle(s)}</div>
+                    <div className="mt-0.5 text-xs text-[var(--text-35)]">
                       {new Date(s.startedAt).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}
                     </div>
                   </div>
                   <div className="ml-4 shrink-0 text-right">
-                    <div className="text-sm font-semibold text-white/70">{sessionSetCount(s)} sets</div>
-                    <div className="text-xs text-white/35">{fmtVolume(sessionVolume(s))} kg</div>
+                    <div className="text-sm font-semibold text-[var(--text-70)]">{sessionSetCount(s)} sets</div>
+                    <div className="text-xs text-[var(--text-35)]">{fmtVolume(sessionVolume(s))} kg</div>
                   </div>
                 </Link>
               ))}
@@ -148,7 +150,7 @@ export default async function Home() {
         </section>
 
         {/* Bottom nav */}
-        <nav className="grid grid-cols-4 gap-2 border-t border-white/[0.07] pt-6">
+        <nav className="grid grid-cols-4 gap-2 border-t border-[var(--border)] pt-6">
           {[
             { href: "/templates", label: "Templates", icon: "◈" },
             { href: "/programs", label: "Programs", icon: "◉" },
@@ -156,9 +158,9 @@ export default async function Home() {
             { href: "/progress", label: "Progress", icon: "◈" },
           ].map(({ href, label, icon }) => (
             <Link key={href} href={href}
-              className="flex flex-col items-center gap-1 rounded-xl border border-white/[0.07] p-3 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all group">
-              <span className="text-lg text-white/25 group-hover:text-orange-500 transition-colors">{icon}</span>
-              <span className="text-xs text-white/40 group-hover:text-white/70 uppercase tracking-wider">{label}</span>
+              className="flex flex-col items-center gap-1 rounded-xl border border-[var(--border)] p-3 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all group">
+              <span className="text-lg text-[var(--text-25)] group-hover:text-orange-500 transition-colors">{icon}</span>
+              <span className="text-xs text-[var(--text-40)] group-hover:text-[var(--text-70)] uppercase tracking-wider">{label}</span>
             </Link>
           ))}
         </nav>
@@ -218,8 +220,8 @@ function WorkoutHeatmap({ sessionDates }: { sessionDates: string[] }) {
   })();
 
   return (
-    <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-4 space-y-3">
-      <div className="flex items-center justify-between text-xs text-white/35">
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-3">
+      <div className="flex items-center justify-between text-xs text-[var(--text-35)]">
         <span>{totalWorkouts} workout{totalWorkouts !== 1 ? "s" : ""} in the last year</span>
         {currentStreak > 0 && (
           <span className="text-orange-400 font-bold">{currentStreak} day streak 🔥</span>
@@ -233,7 +235,7 @@ function WorkoutHeatmap({ sessionDates }: { sessionDates: string[] }) {
           <div className="relative h-4 mb-1">
             {monthLabels.map(({ label, col }) => (
               <span key={`${label}-${col}`}
-                className="absolute text-[9px] text-white/25 uppercase tracking-wider"
+                className="absolute text-[9px] text-[var(--text-25)] uppercase tracking-wider"
                 style={{ left: `${col * 12}px` }}>
                 {label}
               </span>
@@ -254,9 +256,9 @@ function WorkoutHeatmap({ sessionDates }: { sessionDates: string[] }) {
                       className={`w-[10px] h-[10px] rounded-[2px] transition-colors ${
                         isFuture ? "opacity-0" :
                         isToday && hasWorkout ? "bg-orange-400 ring-1 ring-orange-300/50" :
-                        isToday ? "bg-white/10 ring-1 ring-white/20" :
+                        isToday ? "bg-[var(--input-bg)] ring-1 ring-white/20" :
                         hasWorkout ? "bg-orange-500" :
-                        "bg-white/[0.06]"
+                        "bg-[var(--input-bg)]"
                       }`}
                     />
                   );

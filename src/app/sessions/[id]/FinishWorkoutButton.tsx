@@ -69,7 +69,7 @@ export function FinishWorkoutButton({
       : totalVolume.toFixed(0);
 
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0d0d0f] px-8">
+      <div className="always-dark fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--bg)] px-8">
         {/* Trophy */}
         <div className="text-7xl mb-6">🏆</div>
 
@@ -77,7 +77,7 @@ export function FinishWorkoutButton({
           <div className="text-4xl font-black uppercase tracking-widest text-white">
             Done!
           </div>
-          <div className="text-sm text-white/40 uppercase tracking-wider">
+          <div className="text-sm text-[var(--text-40)] uppercase tracking-wider">
             Workout complete
           </div>
         </div>
@@ -89,21 +89,21 @@ export function FinishWorkoutButton({
             { value: `${totalSets}`, label: "sets" },
             { value: `${fmtVol} kg`, label: "volume" },
           ].map(({ value, label }) => (
-            <div key={label} className="flex flex-col items-center rounded-2xl border border-white/[0.07] bg-white/[0.03] py-4 px-2">
+            <div key={label} className="flex flex-col items-center rounded-2xl border border-[var(--border)] bg-[var(--card)] py-4 px-2">
               <div className="text-xl font-black text-orange-500 leading-none">{value}</div>
-              <div className="text-[10px] text-white/30 uppercase tracking-wider mt-1">{label}</div>
+              <div className="text-[10px] text-[var(--text-30)] uppercase tracking-wider mt-1">{label}</div>
             </div>
           ))}
         </div>
 
         {/* Fun comparison */}
-        <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-4 flex items-center gap-4 w-full max-w-xs mb-12">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] px-5 py-4 flex items-center gap-4 w-full max-w-xs mb-12">
           <span className="text-4xl">{emoji}</span>
           <div>
             <div className="text-sm font-bold text-white leading-snug">
               That&apos;s {text}
             </div>
-            <div className="text-xs text-white/30 mt-0.5">total volume this session</div>
+            <div className="text-xs text-[var(--text-30)] mt-0.5">total volume this session</div>
           </div>
         </div>
 
@@ -120,13 +120,13 @@ export function FinishWorkoutButton({
   if (confirming) {
     return (
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm text-white/50 w-full sm:w-auto">Finish this workout?</span>
+        <span className="text-sm text-[var(--text-50)] w-full sm:w-auto">Finish this workout?</span>
         <button onClick={handleFinish} disabled={loading}
           className="rounded-xl bg-green-500 px-4 py-2.5 text-sm font-black text-white hover:bg-green-400 disabled:opacity-50 transition-colors uppercase tracking-wide">
           {loading ? "…" : "Yes, finish ✓"}
         </button>
         <button onClick={() => setConfirming(false)}
-          className="rounded-xl bg-white/[0.07] px-3 py-2.5 text-sm text-white/50 hover:text-white/80 transition-colors">
+          className="rounded-xl bg-[var(--input-bg)] px-3 py-2.5 text-sm text-[var(--text-50)] hover:text-[var(--text-70)] transition-colors">
           Not yet
         </button>
       </div>

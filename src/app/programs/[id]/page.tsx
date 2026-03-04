@@ -52,7 +52,7 @@ export default async function ProgramDetailPage({
       <div className="mx-auto max-w-3xl space-y-6">
 
         <div className="pt-4">
-          <Link href="/programs" className="text-xs text-white/30 hover:text-white/60 uppercase tracking-wider">← Programs</Link>
+          <Link href="/programs" className="text-xs text-[var(--text-30)] hover:text-[var(--text-60)] uppercase tracking-wider">← Programs</Link>
         </div>
 
         {/* Header */}
@@ -60,13 +60,13 @@ export default async function ProgramDetailPage({
           <div className="space-y-2">
             <h1 className="text-3xl font-black uppercase tracking-tight">{program.name}</h1>
             <div className="flex flex-wrap gap-2">
-              <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${GOAL_COLOR[program.goal] ?? "text-white/50 bg-white/5 border-white/10"}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${GOAL_COLOR[program.goal] ?? "text-[var(--text-50)] bg-[var(--card)] border-[var(--border)]"}`}>
                 {GOAL_LABEL[program.goal] ?? program.goal}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded-full border border-white/10 text-white/40">
+              <span className="text-xs px-2 py-0.5 rounded-full border border-[var(--border)] text-[var(--text-40)]">
                 {LEVEL_LABEL[program.level] ?? program.level}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded-full border border-white/10 text-white/40">
+              <span className="text-xs px-2 py-0.5 rounded-full border border-[var(--border)] text-[var(--text-40)]">
                 {program.daysPerWeek} days / week
               </span>
             </div>
@@ -76,37 +76,37 @@ export default async function ProgramDetailPage({
 
         {/* Summary */}
         {(program.summary || program.details) && (
-          <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-4 space-y-2">
-            {program.summary && <p className="text-white/70 leading-relaxed">{program.summary}</p>}
-            {program.details && <p className="text-sm text-white/45 leading-relaxed">{program.details}</p>}
+          <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-2">
+            {program.summary && <p className="text-[var(--text-70)] leading-relaxed">{program.summary}</p>}
+            {program.details && <p className="text-sm text-[var(--text-40)] leading-relaxed">{program.details}</p>}
           </div>
         )}
 
         {/* Workouts */}
         <section className="space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Program Overview</h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Program Overview</h2>
 
           {program.workouts.length === 0 ? (
-            <div className="rounded-xl border border-white/[0.07] p-8 text-center text-white/40">
+            <div className="rounded-xl border border-[var(--border)] p-8 text-center text-[var(--text-40)]">
               No workouts defined for this program.
             </div>
           ) : (
             program.workouts.map((workout) => (
-              <div key={workout.id} className="rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
-                <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-white/[0.07]">
+              <div key={workout.id} className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
+                <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2">
                     <div className="w-1 h-4 rounded-full bg-orange-500 shrink-0" />
                     <h3 className="font-bold text-sm">
                       Day {workout.dayNumber} — {workout.title}
                     </h3>
                   </div>
-                  <span className="text-xs text-white/35 uppercase tracking-wide">
+                  <span className="text-xs text-[var(--text-35)] uppercase tracking-wide">
                     {workout.exercises.length} exercise{workout.exercises.length !== 1 ? "s" : ""}
                   </span>
                 </div>
 
                 {workout.exercises.length === 0 ? (
-                  <p className="p-4 text-sm text-white/35">No exercises listed.</p>
+                  <p className="p-4 text-sm text-[var(--text-35)]">No exercises listed.</p>
                 ) : (
                   <ol className="p-4 space-y-2">
                     {workout.exercises.map((pwe, i) => (
@@ -114,12 +114,12 @@ export default async function ProgramDetailPage({
                         <span className="mt-0.5 w-5 shrink-0 text-right text-xs text-orange-500/50 font-bold">{i + 1}</span>
                         <div className="flex-1">
                           <span className="font-semibold">{pwe.exercise.name}</span>
-                          <span className="ml-2 text-white/40 text-xs">
+                          <span className="ml-2 text-[var(--text-40)] text-xs">
                             {pwe.targetSets} × {pwe.repRangeMin}–{pwe.repRangeMax}
                             {pwe.rpeTarget != null ? ` · RPE ${pwe.rpeTarget}` : ""}
                           </span>
                         </div>
-                        <span className="shrink-0 text-xs text-white/25 capitalize">
+                        <span className="shrink-0 text-xs text-[var(--text-25)] capitalize">
                           {pwe.exercise.equipment.toLowerCase().replace("_", " ")}
                         </span>
                       </li>

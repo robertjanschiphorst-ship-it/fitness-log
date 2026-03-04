@@ -40,11 +40,11 @@ export function RestTimer({ seconds = 90, onDismiss }: { seconds?: number; onDis
 
       <div className="flex-1">
         <div className="text-sm font-bold text-orange-400">Rest</div>
-        <div className="text-xs text-white/40">{remaining}s until next set</div>
+        <div className="text-xs text-[var(--text-40)]">{remaining}s until next set</div>
       </div>
 
       <button onClick={handleDismiss}
-        className="text-xs text-white/30 hover:text-white/70 px-2 py-1 rounded-lg hover:bg-white/5 transition-all">
+        className="text-xs text-[var(--text-30)] hover:text-[var(--text-70)] px-2 py-1 rounded-lg hover:bg-[var(--card)] transition-all">
         Skip →
       </button>
     </div>

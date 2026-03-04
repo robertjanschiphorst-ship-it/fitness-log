@@ -1,21 +1,87 @@
 @import "tailwindcss";
 
+/* ── Theme tokens ─────────────────────────────────────────────── */
 :root {
-  --background: #0d0d0f;
-  --foreground: #f4f4f5;
-  --accent: #f97316;
+  /* Dark (default) */
+  --bg:           #0d0d0f;
+  --surface:      #18181b;
+  --card:         rgba(255,255,255,0.03);
+  --card-hover:   rgba(255,255,255,0.04);
+  --input-bg:     rgba(255,255,255,0.06);
+  --input-hover:  rgba(255,255,255,0.09);
+  --border:       rgba(255,255,255,0.07);
+  --border-sm:    rgba(255,255,255,0.05);
+  --text:         #f4f4f5;
+  --text-70:      rgba(255,255,255,0.70);
+  --text-60:      rgba(255,255,255,0.60);
+  --text-50:      rgba(255,255,255,0.50);
+  --text-40:      rgba(255,255,255,0.40);
+  --text-35:      rgba(255,255,255,0.35);
+  --text-30:      rgba(255,255,255,0.30);
+  --text-25:      rgba(255,255,255,0.25);
+  --text-20:      rgba(255,255,255,0.20);
+  --overlay:      rgba(0,0,0,0.20);
+  --overlay-dark: rgba(0,0,0,0.70);
+  --accent:       #f97316;
+  --chart-neutral: #9ca3af;
+}
+
+[data-theme="light"] {
+  --bg:           #f2f2f5;
+  --surface:      #ffffff;
+  --card:         rgba(0,0,0,0.03);
+  --card-hover:   rgba(0,0,0,0.05);
+  --input-bg:     rgba(0,0,0,0.055);
+  --input-hover:  rgba(0,0,0,0.09);
+  --border:       rgba(0,0,0,0.10);
+  --border-sm:    rgba(0,0,0,0.06);
+  --text:         #18181b;
+  --text-70:      rgba(0,0,0,0.70);
+  --text-60:      rgba(0,0,0,0.62);
+  --text-50:      rgba(0,0,0,0.52);
+  --text-40:      rgba(0,0,0,0.45);
+  --text-35:      rgba(0,0,0,0.38);
+  --text-30:      rgba(0,0,0,0.33);
+  --text-25:      rgba(0,0,0,0.28);
+  --text-20:      rgba(0,0,0,0.22);
+  --overlay:      rgba(0,0,0,0.06);
+  --overlay-dark: rgba(0,0,0,0.50);
+  --chart-neutral: #6b7280;
+}
+
+/* Force dark for full-screen overlays (rest timer, finish celebration) */
+.always-dark {
+  --bg:           #0d0d0f;
+  --surface:      #18181b;
+  --card:         rgba(255,255,255,0.03);
+  --card-hover:   rgba(255,255,255,0.04);
+  --input-bg:     rgba(255,255,255,0.06);
+  --input-hover:  rgba(255,255,255,0.09);
+  --border:       rgba(255,255,255,0.07);
+  --border-sm:    rgba(255,255,255,0.05);
+  --text:         #f4f4f5;
+  --text-70:      rgba(255,255,255,0.70);
+  --text-60:      rgba(255,255,255,0.60);
+  --text-50:      rgba(255,255,255,0.50);
+  --text-40:      rgba(255,255,255,0.40);
+  --text-35:      rgba(255,255,255,0.35);
+  --text-30:      rgba(255,255,255,0.30);
+  --text-25:      rgba(255,255,255,0.25);
+  --text-20:      rgba(255,255,255,0.20);
+  --overlay:      rgba(0,0,0,0.20);
+  --overlay-dark: rgba(0,0,0,0.70);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -34,5 +100,5 @@ input[type="number"] {
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #ffffff20; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #ffffff40; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-20); }

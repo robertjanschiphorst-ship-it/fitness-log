@@ -114,14 +114,14 @@ export default async function TemplateDetailPage({
       <div className="mx-auto max-w-3xl space-y-6">
 
         <div className="pt-4">
-          <Link href="/templates" className="text-xs text-white/30 hover:text-white/60 uppercase tracking-wider">← Templates</Link>
+          <Link href="/templates" className="text-xs text-[var(--text-30)] hover:text-[var(--text-60)] uppercase tracking-wider">← Templates</Link>
         </div>
 
         {/* Header */}
         <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight leading-tight">{template.name}</h1>
-            <p className="mt-1 text-xs text-white/40 uppercase tracking-wider">
+            <p className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">
               {template.templateType.charAt(0) + template.templateType.slice(1).toLowerCase()} · {template.exercises.length} exercise{template.exercises.length !== 1 ? "s" : ""}
             </p>
           </div>
@@ -131,22 +131,22 @@ export default async function TemplateDetailPage({
         </header>
 
         {/* Exercise list */}
-        <section className="rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.07]">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Exercises</h2>
-            <span className="text-xs text-white/25">{template.exercises.length} total</span>
+        <section className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Exercises</h2>
+            <span className="text-xs text-[var(--text-25)]">{template.exercises.length} total</span>
           </div>
 
           {template.exercises.length === 0 ? (
-            <p className="p-6 text-center text-white/40 text-sm">No exercises yet — add some below.</p>
+            <p className="p-6 text-center text-[var(--text-40)] text-sm">No exercises yet — add some below.</p>
           ) : (
-            <ol className="divide-y divide-white/[0.05]">
+            <ol className="divide-y divide-[var(--border-sm)]">
               {template.exercises.map((te, i) => (
                 <li key={te.id} className="flex items-center gap-3 px-4 py-3 group">
                   <span className="text-xs font-black text-orange-500/40 w-5 shrink-0 text-right">{i + 1}</span>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-sm truncate">{te.exercise.name}</div>
-                    <div className="text-xs text-white/40 mt-0.5">
+                    <div className="text-xs text-[var(--text-40)] mt-0.5">
                       {te.targetSets} sets · {te.repRangeMin}–{te.repRangeMax} reps
                     </div>
                   </div>
@@ -154,7 +154,7 @@ export default async function TemplateDetailPage({
                     <input type="hidden" name="templateExerciseId" value={te.id} />
                     <input type="hidden" name="templateId" value={template.id} />
                     <button type="submit"
-                      className="text-white/25 hover:text-red-400 transition-colors text-sm sm:opacity-0 sm:group-hover:opacity-100 px-2 py-1">
+                      className="text-[var(--text-25)] hover:text-red-400 transition-colors text-sm sm:opacity-0 sm:group-hover:opacity-100 px-2 py-1">
                       ✕
                     </button>
                   </form>
@@ -165,9 +165,9 @@ export default async function TemplateDetailPage({
         </section>
 
         {/* Add exercise */}
-        <section className="rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
-          <div className="px-4 py-3 border-b border-white/[0.07]">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Add Exercise</h2>
+        <section className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
+          <div className="px-4 py-3 border-b border-[var(--border)]">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Add Exercise</h2>
           </div>
 
           <form action={addExercise} className="p-4 space-y-4">
@@ -185,13 +185,13 @@ export default async function TemplateDetailPage({
                 { name: "repRangeMax", label: "Reps max", defaultValue: 12 },
               ].map(({ name, label, defaultValue }) => (
                 <div key={name} className="space-y-1">
-                  <label className="text-xs text-white/40 uppercase tracking-wider">{label}</label>
+                  <label className="text-xs text-[var(--text-40)] uppercase tracking-wider">{label}</label>
                   <input
                     name={name}
                     type="number"
                     min={1}
                     defaultValue={defaultValue}
-                    className="w-full rounded-lg bg-white/[0.06] px-3 py-2 text-sm font-semibold outline-none ring-1 ring-white/10 focus:ring-orange-500/50"
+                    className="w-full rounded-lg bg-[var(--input-bg)] px-3 py-2 text-sm font-semibold outline-none ring-1 ring-[var(--border)] focus:ring-orange-500/50"
                   />
                 </div>
               ))}
@@ -202,7 +202,7 @@ export default async function TemplateDetailPage({
             </button>
           </form>
 
-          <p className="px-4 pb-4 text-xs text-white/25">
+          <p className="px-4 pb-4 text-xs text-[var(--text-25)]">
             Suggestions are based on template type and hide exercises already added.
           </p>
         </section>

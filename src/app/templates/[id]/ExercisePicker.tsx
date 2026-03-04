@@ -29,20 +29,20 @@ export function ExercisePicker({
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <label className="text-sm text-white/80">Search</label>
+        <label className="text-sm text-[var(--text-70)]">Search</label>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="bench, squat, row..."
-          className="w-full rounded-md bg-white/5 px-3 py-2 outline-none ring-1 ring-white/10 focus:ring-2"
+          className="w-full rounded-md bg-[var(--card)] px-3 py-2 outline-none ring-1 ring-[var(--border)] focus:ring-2"
         />
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm text-white/80">Exercise</label>
+        <label className="text-sm text-[var(--text-70)]">Exercise</label>
         <select
           name="exerciseId"
-          className="w-full rounded-md bg-white/5 px-3 py-2 outline-none ring-1 ring-white/10 focus:ring-2"
+          className="w-full rounded-md bg-[var(--card)] px-3 py-2 outline-none ring-1 ring-[var(--border)] focus:ring-2"
         >
           {filteredSuggested.length > 0 && (
             <optgroup label="Suggested">
@@ -62,7 +62,7 @@ export function ExercisePicker({
             ))}
           </optgroup>
         </select>
-        <p className="text-xs text-white/60">
+        <p className="text-xs text-[var(--text-60)]">
           Suggested shows up to 50 • All shows up to 200.
         </p>
       </div>

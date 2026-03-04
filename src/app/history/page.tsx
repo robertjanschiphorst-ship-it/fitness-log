@@ -35,19 +35,19 @@ export default async function HistoryPage() {
     <main className="min-h-screen p-5 pb-10">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="pt-4">
-          <Link href="/" className="text-xs text-white/30 hover:text-white/60 uppercase tracking-wider">← Home</Link>
+          <Link href="/" className="text-xs text-[var(--text-30)] hover:text-[var(--text-60)] uppercase tracking-wider">← Home</Link>
         </div>
 
         <header>
           <h1 className="text-3xl font-black uppercase tracking-tight">History</h1>
-          <p className="mt-1 text-xs text-white/40 uppercase tracking-wider">
+          <p className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">
             {sessions.length} session{sessions.length !== 1 ? "s" : ""} logged
           </p>
         </header>
 
         {sessions.length === 0 ? (
-          <div className="rounded-xl border border-white/[0.07] p-10 text-center space-y-3">
-            <p className="text-white/40">No sessions logged yet.</p>
+          <div className="rounded-xl border border-[var(--border)] p-10 text-center space-y-3">
+            <p className="text-[var(--text-40)]">No sessions logged yet.</p>
             <Link href="/templates" className="text-sm text-orange-500 hover:text-orange-400">
               Start a workout →
             </Link>
@@ -56,7 +56,7 @@ export default async function HistoryPage() {
           <div className="space-y-8">
             {[...grouped.entries()].map(([month, monthSessions]) => (
               <section key={month} className="space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-orange-500/70 pb-1 border-b border-white/[0.07]">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-orange-500/70 pb-1 border-b border-[var(--border)]">
                   {month}
                 </h2>
                 <div className="space-y-2">
@@ -68,12 +68,12 @@ export default async function HistoryPage() {
                       : null;
 
                     return (
-                      <div key={s.id} className="group flex items-center gap-1 rounded-xl border border-white/[0.07] bg-white/[0.03] hover:border-orange-500/30 transition-all">
+                      <div key={s.id} className="group flex items-center gap-1 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-orange-500/30 transition-all">
                         <div className="w-1 self-stretch rounded-l-xl bg-orange-500/30 group-hover:bg-orange-500/60 transition-colors shrink-0" />
                         <Link href={`/sessions/${s.id}`} className="flex flex-1 items-center justify-between p-3 min-w-0">
                           <div className="min-w-0">
                             <div className="font-medium text-sm truncate">{sessionTitle(s)}</div>
-                            <div className="mt-0.5 text-xs text-white/40">
+                            <div className="mt-0.5 text-xs text-[var(--text-40)]">
                               {new Date(s.startedAt).toLocaleDateString("en-GB", {
                                 weekday: "short", day: "numeric", month: "short",
                               })}
@@ -81,8 +81,8 @@ export default async function HistoryPage() {
                             </div>
                           </div>
                           <div className="ml-4 shrink-0 text-right">
-                            <div className="text-sm font-semibold text-white/70">{sets.length} sets</div>
-                            <div className="text-xs text-white/35">
+                            <div className="text-sm font-semibold text-[var(--text-70)]">{sets.length} sets</div>
+                            <div className="text-xs text-[var(--text-35)]">
                               {vol >= 1000 ? `${(vol / 1000).toFixed(1)}k` : vol.toFixed(0)} kg
                             </div>
                           </div>

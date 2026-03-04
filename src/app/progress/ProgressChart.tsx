@@ -8,11 +8,11 @@ export function ProgressChart({ data }: { data: DataPoint[] }) {
   if (data.length === 1) {
     return (
       <div className="flex items-center gap-3 text-sm">
-        <span className="text-white/35 text-xs">
+        <span className="text-[var(--text-35)] text-xs">
           {new Date(data[0].date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
         </span>
         <span className="font-black text-orange-500">{data[0].maxWeight} kg</span>
-        <span className="text-xs text-white/25">Only one session — keep going!</span>
+        <span className="text-xs text-[var(--text-25)]">Only one session — keep going!</span>
       </div>
     );
   }
@@ -41,9 +41,9 @@ export function ProgressChart({ data }: { data: DataPoint[] }) {
   const same = data[data.length - 1].maxWeight === data[0].maxWeight;
   const diff = data[data.length - 1].maxWeight - data[0].maxWeight;
 
-  const lineColor = improved ? "#f97316" : same ? "rgba(255,255,255,0.3)" : "#f87171";
-  const areaColor = improved ? "rgba(249,115,22,0.08)" : same ? "rgba(255,255,255,0.03)" : "rgba(248,113,113,0.06)";
-  const diffColor = improved ? "text-orange-400" : same ? "text-white/35" : "text-red-400";
+  const lineColor = improved ? "#f97316" : same ? "#9ca3af" : "#f87171";
+  const areaColor = improved ? "rgba(249,115,22,0.08)" : same ? "rgba(156,163,175,0.10)" : "rgba(248,113,113,0.06)";
+  const diffColor = improved ? "text-orange-400" : same ? "text-[var(--text-35)]" : "text-red-400";
 
   const firstDate = new Date(data[0].date).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
   const lastDate = new Date(data[data.length - 1].date).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -58,11 +58,11 @@ export function ProgressChart({ data }: { data: DataPoint[] }) {
         <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="4" fill={lineColor} />
       </svg>
       <div className="flex items-center justify-between text-xs">
-        <span className="text-white/30">{firstDate}</span>
+        <span className="text-[var(--text-30)]">{firstDate}</span>
         <span className={`font-bold ${diffColor}`}>
           {diff > 0 ? `+${diff} kg` : diff < 0 ? `${diff} kg` : "No change"}
         </span>
-        <span className="text-white/30">{lastDate}</span>
+        <span className="text-[var(--text-30)]">{lastDate}</span>
       </div>
     </div>
   );

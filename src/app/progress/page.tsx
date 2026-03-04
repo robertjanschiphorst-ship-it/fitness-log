@@ -40,17 +40,17 @@ export default async function ProgressPage() {
     <main className="min-h-screen p-5 pb-10">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="pt-4">
-          <Link href="/" className="text-xs text-white/30 hover:text-white/60 uppercase tracking-wider">← Home</Link>
+          <Link href="/" className="text-xs text-[var(--text-30)] hover:text-[var(--text-60)] uppercase tracking-wider">← Home</Link>
         </div>
 
         <header>
           <h1 className="text-3xl font-black uppercase tracking-tight">Progress</h1>
-          <p className="mt-1 text-xs text-white/40 uppercase tracking-wider">Strength over time, per exercise</p>
+          <p className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">Strength over time, per exercise</p>
         </header>
 
         {exercises.length === 0 ? (
-          <div className="rounded-xl border border-white/[0.07] p-10 text-center space-y-3">
-            <p className="text-white/40">No data yet — log some workouts to see your progress.</p>
+          <div className="rounded-xl border border-[var(--border)] p-10 text-center space-y-3">
+            <p className="text-[var(--text-40)]">No data yet — log some workouts to see your progress.</p>
             <Link href="/templates" className="text-sm text-orange-500 hover:text-orange-400">
               Start a workout →
             </Link>
@@ -62,8 +62,8 @@ export default async function ProgressPage() {
               const first = data[0].maxWeight;
               const diff = best - first;
               return (
-                <div key={name} className="rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
-                  <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-white/[0.07]">
+                <div key={name} className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
+                  <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-[var(--border)]">
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-5 rounded-full bg-orange-500 shrink-0" />
                       <h2 className="font-bold">{name}</h2>
@@ -71,7 +71,7 @@ export default async function ProgressPage() {
                     <div className="flex items-center gap-3 text-right">
                       <div>
                         <div className="text-lg font-black text-orange-500">{best} kg</div>
-                        <div className="text-xs text-white/35 uppercase tracking-wide">
+                        <div className="text-xs text-[var(--text-35)] uppercase tracking-wide">
                           {diff > 0 ? `+${diff.toFixed(1)} kg` : diff < 0 ? `${diff.toFixed(1)} kg` : "—"} total
                         </div>
                       </div>

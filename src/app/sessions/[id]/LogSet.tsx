@@ -37,14 +37,14 @@ function FullScreenRestTimer({
   const circumference = 2 * Math.PI * r;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0d0d0f]">
+    <div className="always-dark fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--bg)]">
       {/* Big ring */}
       <div className="relative w-56 h-56">
         <svg viewBox="0 0 200 200" className="w-56 h-56 -rotate-90">
           <circle
             cx="100" cy="100" r={r}
             fill="none" stroke="currentColor"
-            strokeWidth="5" className="text-white/[0.06]"
+            strokeWidth="5" className="text-[var(--text-20)]"
           />
           <circle
             cx="100" cy="100" r={r}
@@ -59,19 +59,19 @@ function FullScreenRestTimer({
           <div className="text-7xl font-black text-white tabular-nums leading-none">
             {remaining}
           </div>
-          <div className="text-xs text-white/30 uppercase tracking-widest mt-2">
+          <div className="text-xs text-[var(--text-30)] uppercase tracking-widest mt-2">
             seconds
           </div>
         </div>
       </div>
 
-      <div className="mt-6 text-lg font-black uppercase tracking-[0.3em] text-white/40">
+      <div className="mt-6 text-lg font-black uppercase tracking-[0.3em] text-[var(--text-40)]">
         Rest
       </div>
 
       <button
         onClick={onDismiss}
-        className="mt-20 rounded-2xl border border-white/10 bg-white/[0.04] px-10 py-4 text-sm font-bold text-white/40 uppercase tracking-widest hover:bg-white/[0.08] hover:text-white/60 transition-all active:scale-95"
+        className="mt-20 rounded-2xl border border-[var(--border)] bg-[var(--card-hover)] px-10 py-4 text-sm font-bold text-[var(--text-40)] uppercase tracking-widest hover:bg-[var(--input-hover)] hover:text-[var(--text-60)] transition-all active:scale-95"
       >
         Skip Rest →
       </button>
@@ -90,24 +90,24 @@ function RpeBottomSheet({
   onConfirm: (rpe: number | "") => void;
 }) {
   return (
-    <div className="fixed inset-0 z-40 flex flex-col justify-end">
+    <div className="always-dark fixed inset-0 z-40 flex flex-col justify-end">
       {/* Backdrop — tap to skip */}
       <div
-        className="absolute inset-0 bg-black/70"
+        className="absolute inset-0 bg-[var(--overlay-dark)]"
         onClick={() => onConfirm("")}
       />
 
       {/* Sheet */}
-      <div className="relative z-10 rounded-t-3xl bg-[#18181b] border-t border-white/[0.08] px-6 pt-4 pb-10 space-y-5">
+      <div className="relative z-10 rounded-t-3xl bg-[var(--surface)] border-t border-[var(--border)] px-6 pt-4 pb-10 space-y-5">
         {/* Handle bar */}
-        <div className="mx-auto w-10 h-1 rounded-full bg-white/20" />
+        <div className="mx-auto w-10 h-1 rounded-full bg-[var(--text-20)]" />
 
         {/* Set summary */}
         <div className="text-center space-y-1">
           <div className="text-3xl font-black tracking-tight">
             {weight} kg × {reps}
           </div>
-          <div className="text-sm text-white/40">How hard was that set?</div>
+          <div className="text-sm text-[var(--text-40)]">How hard was that set?</div>
         </div>
 
         {/* RPE buttons — full 1–10 scale in a 5×2 grid */}
@@ -118,7 +118,7 @@ function RpeBottomSheet({
               onClick={() => onConfirm(r)}
               className={`flex items-center justify-center rounded-2xl border py-4 text-xl font-black active:scale-95 transition-all ${
                 r <= 5
-                  ? "border-white/[0.06] bg-white/[0.03] text-white/60 hover:bg-white/[0.08]"
+                  ? "border-[var(--border)] bg-[var(--card)] text-[var(--text-60)] hover:bg-[var(--input-hover)]"
                   : r <= 7
                   ? "border-orange-500/20 bg-orange-500/5 text-white hover:bg-orange-500/15"
                   : "border-orange-500/40 bg-orange-500/10 text-orange-300 hover:bg-orange-500/25"
@@ -129,14 +129,14 @@ function RpeBottomSheet({
           ))}
         </div>
         {/* Range hint */}
-        <div className="flex justify-between text-[10px] text-white/25 uppercase tracking-wider px-1 -mt-1">
+        <div className="flex justify-between text-[10px] text-[var(--text-25)] uppercase tracking-wider px-1 -mt-1">
           <span>Easy</span>
           <span>Max effort</span>
         </div>
 
         <button
           onClick={() => onConfirm("")}
-          className="w-full text-sm text-white/25 py-1 hover:text-white/50 transition-colors"
+          className="w-full text-sm text-[var(--text-25)] py-1 hover:text-[var(--text-50)] transition-colors"
         >
           Skip RPE
         </button>
@@ -250,7 +250,7 @@ export function LogSet({
           <span className="text-lg">🏆</span>
           <div>
             <div className="text-sm font-black text-yellow-400 uppercase tracking-wide">New PR!</div>
-            <div className="text-xs text-white/50">{weight} kg — best ever on this exercise</div>
+            <div className="text-xs text-[var(--text-50)]">{weight} kg — best ever on this exercise</div>
           </div>
         </div>
       )}
@@ -262,7 +262,7 @@ export function LogSet({
           <button
             type="button"
             onClick={() => { setReps(last.reps); setWeight(last.weightKg); }}
-            className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-xs text-white/50 hover:border-orange-500/30 hover:text-orange-400 transition-all w-fit"
+            className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs text-[var(--text-50)] hover:border-orange-500/30 hover:text-orange-400 transition-all w-fit"
           >
             ↑ Same as last set — {last.weightKg} kg × {last.reps}
           </button>
@@ -273,23 +273,25 @@ export function LogSet({
       <div className="space-y-2">
         <div className="flex items-end gap-2">
           <div className="flex-1">
-            <label className="block text-xs text-white/40 uppercase tracking-wider mb-1">Reps</label>
+            <label className="block text-xs text-[var(--text-40)] uppercase tracking-wider mb-1">Reps</label>
             <input
               type="number"
               inputMode="numeric"
               value={reps}
               onChange={(e) => setReps(Number(e.target.value))}
-              className="w-full rounded-lg bg-white/[0.06] px-3 py-3 text-lg font-black ring-1 ring-white/10 focus:outline-none focus:ring-orange-500/50"
+              onFocus={(e) => e.target.select()}
+              className="w-full rounded-lg bg-[var(--input-bg)] px-3 py-3 text-lg font-black ring-1 ring-[var(--border)] focus:outline-none focus:ring-orange-500/50"
             />
           </div>
           <div className="flex-1">
-            <label className="block text-xs text-white/40 uppercase tracking-wider mb-1">Weight (kg)</label>
+            <label className="block text-xs text-[var(--text-40)] uppercase tracking-wider mb-1">Weight (kg)</label>
             <input
               type="number"
               inputMode="decimal"
               value={weight}
               onChange={(e) => setWeight(Number(e.target.value))}
-              className="w-full rounded-lg bg-white/[0.06] px-3 py-3 text-lg font-black ring-1 ring-white/10 focus:outline-none focus:ring-orange-500/50"
+              onFocus={(e) => e.target.select()}
+              className="w-full rounded-lg bg-[var(--input-bg)] px-3 py-3 text-lg font-black ring-1 ring-[var(--border)] focus:outline-none focus:ring-orange-500/50"
             />
           </div>
         </div>
@@ -299,7 +301,7 @@ export function LogSet({
           <button
             onClick={handleLogSetTap}
             disabled={loading}
-            className="w-full rounded-xl border border-white/[0.08] bg-transparent py-2 text-xs font-semibold text-white/30 hover:text-white/50 hover:border-white/20 disabled:opacity-50 transition-all uppercase tracking-widest"
+            className="w-full rounded-xl border border-[var(--border)] bg-transparent py-2 text-xs font-semibold text-[var(--text-30)] hover:text-[var(--text-50)] hover:border-[var(--text-20)] disabled:opacity-50 transition-all uppercase tracking-widest"
           >
             {loading ? "…" : `+ Log Extra Set`}
           </button>

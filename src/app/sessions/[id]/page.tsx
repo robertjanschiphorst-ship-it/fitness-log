@@ -115,14 +115,14 @@ export default async function SessionPage({
       <div className="mx-auto max-w-3xl space-y-6">
 
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 pt-4 text-xs text-white/30 uppercase tracking-wider overflow-hidden">
-          <Link href="/" className="hover:text-white/60 shrink-0">Home</Link>
+        <div className="flex items-center gap-2 pt-4 text-xs text-[var(--text-30)] uppercase tracking-wider overflow-hidden">
+          <Link href="/" className="hover:text-[var(--text-60)] shrink-0">Home</Link>
           <span className="shrink-0">/</span>
-          <Link href="/history" className="hover:text-white/60 shrink-0">History</Link>
+          <Link href="/history" className="hover:text-[var(--text-60)] shrink-0">History</Link>
           {template && (
             <>
               <span className="shrink-0">/</span>
-              <Link href={`/templates/${template.id}`} className="hover:text-white/60 truncate min-w-0">{template.name}</Link>
+              <Link href={`/templates/${template.id}`} className="hover:text-[var(--text-60)] truncate min-w-0">{template.name}</Link>
             </>
           )}
         </div>
@@ -133,7 +133,7 @@ export default async function SessionPage({
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight leading-tight">
               {template?.name ?? "Workout"}
             </h1>
-            <p className="mt-1 text-xs text-white/40 uppercase tracking-wider">
+            <p className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">
               {new Date(session.startedAt).toLocaleDateString("en-GB", {
                 weekday: "long", day: "numeric", month: "long", year: "numeric",
               })}
@@ -153,15 +153,15 @@ export default async function SessionPage({
         {/* Session stats strip */}
         {totalSets > 0 && (
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
               <div className="text-xl font-black text-orange-500">{totalSets}</div>
-              <div className="text-xs text-white/40 uppercase tracking-wider mt-0.5">Sets logged</div>
+              <div className="text-xs text-[var(--text-40)] uppercase tracking-wider mt-0.5">Sets logged</div>
             </div>
-            <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3">
               <div className="text-xl font-black text-orange-500">
                 {totalVolume >= 1000 ? `${(totalVolume / 1000).toFixed(1)}k` : totalVolume.toFixed(0)} kg
               </div>
-              <div className="text-xs text-white/40 uppercase tracking-wider mt-0.5">Total volume</div>
+              <div className="text-xs text-[var(--text-40)] uppercase tracking-wider mt-0.5">Total volume</div>
             </div>
           </div>
         )}
@@ -180,18 +180,18 @@ export default async function SessionPage({
                   <div className="text-base font-black uppercase tracking-wide text-orange-400">
                     Workout complete
                   </div>
-                  <div className="text-xs text-white/40 mt-0.5">
+                  <div className="text-xs text-[var(--text-40)] mt-0.5">
                     {durationMin} min · {totalSets} sets · {totalVolume >= 1000 ? `${(totalVolume / 1000).toFixed(1)}k` : totalVolume.toFixed(0)} kg moved
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl bg-black/20 px-4 py-3 flex items-center gap-3">
+              <div className="rounded-xl bg-[var(--overlay)] px-4 py-3 flex items-center gap-3">
                 <span className="text-2xl">{emoji}</span>
                 <div>
-                  <div className="text-sm font-bold text-white/80">
+                  <div className="text-sm font-bold text-[var(--text-70)]">
                     That&apos;s {text}
                   </div>
-                  <div className="text-xs text-white/35 mt-0.5">total volume moved this session</div>
+                  <div className="text-xs text-[var(--text-35)] mt-0.5">total volume moved this session</div>
                 </div>
               </div>
             </div>
@@ -200,7 +200,7 @@ export default async function SessionPage({
 
         {/* Exercises */}
         {session.exercises.length === 0 ? (
-          <div className="rounded-xl border border-white/[0.07] p-8 text-center text-white/40">
+          <div className="rounded-xl border border-[var(--border)] p-8 text-center text-[var(--text-40)]">
             No exercises in this session.
           </div>
         ) : (
@@ -212,17 +212,17 @@ export default async function SessionPage({
               const isNewPR = currentMax != null && (allTimePr == null || currentMax > allTimePr);
 
               return (
-                <div key={se.id} className="rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
+                <div key={se.id} className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
                   {/* Exercise header */}
-                  <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-white/[0.07]">
+                  <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-[var(--border)]">
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-5 rounded-full bg-orange-500 shrink-0" />
                       <div>
                         <div className="font-bold">{se.exerciseName ?? se.exercise?.name ?? "Exercise"}</div>
-                        <div className="text-xs text-white/40">
+                        <div className="text-xs text-[var(--text-40)]">
                           Target: {se.targetSets} × {se.repRangeMin}–{se.repRangeMax} reps
                           {allTimePr != null && (
-                            <span className="ml-2 text-white/25">· PR: {allTimePr} kg</span>
+                            <span className="ml-2 text-[var(--text-25)]">· PR: {allTimePr} kg</span>
                           )}
                         </div>
                       </div>
@@ -238,10 +238,10 @@ export default async function SessionPage({
                       <div className="space-y-1">
                         {se.sets.map((s) => (
                           <div key={s.id} className="flex items-center gap-4 text-sm">
-                            <span className="text-xs text-white/30 w-10">Set {s.setNumber}</span>
+                            <span className="text-xs text-[var(--text-30)] w-10">Set {s.setNumber}</span>
                             <span className="font-semibold w-16">{s.weightKg} kg</span>
-                            <span className="text-white/60">{s.reps} reps</span>
-                            {s.rpe != null && <span className="text-white/35 text-xs">RPE {s.rpe}</span>}
+                            <span className="text-[var(--text-60)]">{s.reps} reps</span>
+                            {s.rpe != null && <span className="text-[var(--text-35)] text-xs">RPE {s.rpe}</span>}
                           </div>
                         ))}
                       </div>
@@ -249,13 +249,13 @@ export default async function SessionPage({
 
                     {/* Previous session reference */}
                     {prev && (
-                      <div className="rounded-lg bg-white/[0.04] px-3 py-2 text-xs">
-                        <div className="text-white/35 uppercase tracking-wide mb-1">
+                      <div className="rounded-lg bg-[var(--card-hover)] px-3 py-2 text-xs">
+                        <div className="text-[var(--text-35)] uppercase tracking-wide mb-1">
                           Last time · {new Date(prev.startedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                         </div>
                         <div className="flex flex-wrap gap-3">
                           {prev.sets.map((s) => (
-                            <span key={s.setNumber} className="text-white/50">
+                            <span key={s.setNumber} className="text-[var(--text-50)]">
                               {s.weightKg} kg × {s.reps}
                               {s.rpe != null ? ` @${s.rpe}` : ""}
                             </span>
