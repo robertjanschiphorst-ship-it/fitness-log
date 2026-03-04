@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const userId = session.user.email;
+
     const body = await req.json();
     const templateId = body?.templateId as string | undefined;
 
@@ -24,9 +31,10 @@ const template = await prisma.workoutTemplate.findUnique({
       return NextResponse.json({ error: "template not found" }, { status: 404 });
     }
 
-    const session = await prisma.workoutSession.create({
+    const workoutSession = await prisma.workoutSession.create({
       data: {
         templateId: template.id,
+        userId,
         startedAt: new Date(),
       },
     });
@@ -34,7 +42,7 @@ const template = await prisma.workoutTemplate.findUnique({
 for (const te of template.exercises) {
   await prisma.sessionExercise.create({
     data: {
-      sessionId: session.id,
+      sessionId: workoutSession.id,
       exerciseId: te.exerciseId,
       exerciseName: te.exercise.name,
       sortOrder: te.sortOrder,
@@ -45,7 +53,7 @@ for (const te of template.exercises) {
   });
 }
 
-    return NextResponse.json({ sessionId: session.id });
+    return NextResponse.json({ sessionId: workoutSession.id });
 } catch (e: any) {
   console.error(e);
   return NextResponse.json(

@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteTemplateButton } from "./DeleteTemplateButton";
+import { auth } from "@/auth";
 
 export const dynamic = 'force-dynamic';
 
 export default async function TemplatesPage() {
+  const session = await auth();
+  const userId = session?.user?.email ?? "";
+
   const templates = await prisma.workoutTemplate.findMany({
+    where: { userId },
     orderBy: { name: "asc" },
     include: { exercises: true },
   });

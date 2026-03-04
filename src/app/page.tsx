@@ -2,25 +2,36 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WeekView } from "@/components/WeekView";
+import { auth, signOut } from "@/auth";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
+  const session = await auth();
+  const userId = session?.user?.email ?? "";
+
   const recentSessions = await prisma.workoutSession.findMany({
+    where: { userId },
     orderBy: { startedAt: "desc" },
     take: 5,
     include: { exercises: { include: { sets: true } } },
   });
 
   const templates = await prisma.workoutTemplate.findMany({
+    where: { userId },
     orderBy: { name: "asc" },
     take: 6,
     include: { exercises: true },
   });
 
-  const totalSessions = await prisma.workoutSession.count();
-  const totalSets = await prisma.set.count();
-  const allSets = await prisma.set.findMany({ select: { reps: true, weightKg: true } });
+  const totalSessions = await prisma.workoutSession.count({ where: { userId } });
+  const totalSets = await prisma.set.count({
+    where: { sessionExercise: { session: { userId } } },
+  });
+  const allSets = await prisma.set.findMany({
+    where: { sessionExercise: { session: { userId } } },
+    select: { reps: true, weightKg: true },
+  });
   const totalVolume = allSets.reduce((sum, s) => sum + s.reps * s.weightKg, 0);
 
   // WeekView: last 365 days of sessions, with IDs for clickable days
@@ -64,7 +75,14 @@ export default async function Home() {
             </h1>
             <p className="mt-1 text-[var(--text-40)] tracking-wide uppercase text-xs">Track your lifts. See your progress.</p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <form action={async () => { "use server"; await signOut({ redirectTo: "/sign-in" }); }}>
+              <button type="submit" title="Sign out" className="w-8 h-8 flex items-center justify-center rounded-lg text-[var(--text-25)] hover:text-[var(--text-50)] hover:bg-[var(--input-bg)] transition-all text-xs">
+                ⏻
+              </button>
+            </form>
+          </div>
         </header>
 
         {/* Consistency is key */}

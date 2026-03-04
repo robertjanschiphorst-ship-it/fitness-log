@@ -2,19 +2,23 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TemplateType } from "@prisma/client";
+import { auth } from "@/auth";
 
 export const dynamic = 'force-dynamic';
 
 async function createTemplate(formData: FormData) {
   "use server";
 
+  const session = await auth();
+  const userId = session?.user?.email ?? "";
+
   const name = String(formData.get("name") ?? "").trim();
   const templateType = String(formData.get("templateType") ?? "OTHER") as TemplateType;
 
   if (!name) return;
 
-  const t = await prisma.workoutTemplate.create({
-    data: { name, templateType },
+  await prisma.workoutTemplate.create({
+    data: { name, templateType, userId },
   });
 
   redirect(`/templates`);

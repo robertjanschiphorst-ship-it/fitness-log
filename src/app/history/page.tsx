@@ -1,16 +1,21 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteSessionButton } from "./DeleteSessionButton";
+import { auth } from "@/auth";
 
 export const dynamic = 'force-dynamic';
 
 export default async function HistoryPage() {
+  const session = await auth();
+  const userId = session?.user?.email ?? "";
+
   const sessions = await prisma.workoutSession.findMany({
+    where: { userId },
     orderBy: { startedAt: "desc" },
     include: { exercises: { include: { sets: true } } },
   });
 
-  const templateNames = await prisma.workoutTemplate.findMany({ select: { id: true, name: true } });
+  const templateNames = await prisma.workoutTemplate.findMany({ where: { userId }, select: { id: true, name: true } });
   const templateNameMap = new Map(templateNames.map((t: { id: string; name: string }) => [t.id, t.name]));
 
   function sessionTitle(s: (typeof sessions)[number]) {

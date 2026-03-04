@@ -97,6 +97,7 @@ model ExerciseMuscleGroup {
 
 model WorkoutTemplate {
   id           String       @id @default(cuid())
+  userId       String       @default("")
   name         String
   templateType TemplateType @default(OTHER)
 
@@ -119,6 +120,7 @@ model TemplateExercise {
 
 model WorkoutSession {
   id             String          @id @default(cuid())
+  userId         String          @default("")
   templateId     String?
   startedAt      DateTime        @default(now())
   finishedAt     DateTime?

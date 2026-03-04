@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProgressChart } from "./ProgressChart";
+import { auth } from "@/auth";
 
 export const dynamic = 'force-dynamic';
 
 export default async function ProgressPage() {
+  const session = await auth();
+  const userId = session?.user?.email ?? "";
+
   const sessionExercises = await prisma.sessionExercise.findMany({
+    where: { session: { userId } },
     include: {
       sets: { orderBy: { setNumber: "asc" } },
       session: { select: { startedAt: true } },
