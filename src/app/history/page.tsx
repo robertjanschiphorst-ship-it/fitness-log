@@ -9,7 +9,7 @@ export default async function HistoryPage() {
   });
 
   const templateNames = await prisma.workoutTemplate.findMany({ select: { id: true, name: true } });
-  const templateNameMap = new Map(templateNames.map((t) => [t.id, t.name]));
+  const templateNameMap = new Map(templateNames.map((t: { id: string; name: string }) => [t.id, t.name]));
 
   function sessionTitle(s: (typeof sessions)[number]) {
     if (s.templateId && templateNameMap.has(s.templateId)) return templateNameMap.get(s.templateId)!;
