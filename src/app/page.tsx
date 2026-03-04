@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { WeekView } from "@/components/WeekView";
 
 export const dynamic = 'force-dynamic';
 
@@ -66,25 +67,20 @@ export default async function Home() {
           <ThemeToggle />
         </header>
 
-        {/* Heatmap */}
+        {/* Consistency */}
         <section className="space-y-3">
           <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Consistency</h2>
-          <WorkoutHeatmap sessionDates={sessionDates} />
+          <WeekView sessionDates={sessionDates} />
         </section>
 
-        {/* Stats */}
-        <section className="grid grid-cols-3 gap-3">
-          {[
-            { label: "Workouts", value: totalSessions.toString() },
-            { label: "Sets logged", value: totalSets.toLocaleString() },
-            { label: "Total volume", value: `${fmtVolume(totalVolume)} kg` },
-          ].map(({ label, value }) => (
-            <div key={label} className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4">
-              <div className="text-2xl font-black text-orange-500 tracking-tight">{value}</div>
-              <div className="mt-1 text-xs text-[var(--text-40)] uppercase tracking-wider">{label}</div>
-            </div>
-          ))}
-        </section>
+        {/* Stats — compact single row */}
+        <div className="flex items-center gap-3 text-xs text-[var(--text-35)] px-0.5">
+          <span><span className="font-bold text-[var(--text-60)]">{totalSessions}</span> workouts</span>
+          <span className="text-[var(--border)]">·</span>
+          <span><span className="font-bold text-[var(--text-60)]">{totalSets.toLocaleString()}</span> sets</span>
+          <span className="text-[var(--border)]">·</span>
+          <span><span className="font-bold text-[var(--text-60)]">{fmtVolume(totalVolume)} kg</span> volume</span>
+        </div>
 
         {/* Quick start */}
         <section className="space-y-3">
@@ -167,107 +163,5 @@ export default async function Home() {
 
       </div>
     </main>
-  );
-}
-
-function WorkoutHeatmap({ sessionDates }: { sessionDates: string[] }) {
-  const dateSet = new Set(sessionDates);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayStr = today.toISOString().split("T")[0];
-
-  // Build a grid starting from a Monday ~52 weeks back
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - 52 * 7);
-  const dow = startDate.getDay();
-  startDate.setDate(startDate.getDate() - (dow === 0 ? 6 : dow - 1));
-
-  const weeks: string[][] = [];
-  const cur = new Date(startDate);
-  while (cur <= today) {
-    const week: string[] = [];
-    for (let d = 0; d < 7; d++) {
-      week.push(cur.toISOString().split("T")[0]);
-      cur.setDate(cur.getDate() + 1);
-    }
-    weeks.push(week);
-  }
-
-  // Month labels: show label at the first week of each month
-  const monthLabels: { label: string; col: number }[] = [];
-  weeks.forEach((week, wi) => {
-    const d = new Date(week[0]);
-    if (d.getDate() <= 7) {
-      monthLabels.push({
-        label: d.toLocaleDateString("en-GB", { month: "short" }),
-        col: wi,
-      });
-    }
-  });
-
-  const totalWorkouts = sessionDates.length;
-  const currentStreak = (() => {
-    let streak = 0;
-    const check = new Date(today);
-    while (true) {
-      const s = check.toISOString().split("T")[0];
-      if (!dateSet.has(s)) break;
-      streak++;
-      check.setDate(check.getDate() - 1);
-    }
-    return streak;
-  })();
-
-  return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-3">
-      <div className="flex items-center justify-between text-xs text-[var(--text-35)]">
-        <span>{totalWorkouts} workout{totalWorkouts !== 1 ? "s" : ""} in the last year</span>
-        {currentStreak > 0 && (
-          <span className="text-orange-400 font-bold">{currentStreak} day streak 🔥</span>
-        )}
-      </div>
-
-      {/* Grid */}
-      <div className="overflow-x-auto">
-        <div className="relative" style={{ minWidth: `${weeks.length * 12}px` }}>
-          {/* Month labels */}
-          <div className="relative h-4 mb-1">
-            {monthLabels.map(({ label, col }) => (
-              <span key={`${label}-${col}`}
-                className="absolute text-[9px] text-[var(--text-25)] uppercase tracking-wider"
-                style={{ left: `${col * 12}px` }}>
-                {label}
-              </span>
-            ))}
-          </div>
-
-          {/* Cells */}
-          <div className="flex gap-[2px]">
-            {weeks.map((week, wi) => (
-              <div key={wi} className="flex flex-col gap-[2px]">
-                {week.map((dateStr) => {
-                  const isFuture = dateStr > todayStr;
-                  const isToday = dateStr === todayStr;
-                  const hasWorkout = dateSet.has(dateStr);
-                  return (
-                    <div key={dateStr}
-                      title={dateStr}
-                      className={`w-[10px] h-[10px] rounded-[2px] transition-colors ${
-                        isFuture ? "opacity-0" :
-                        isToday && hasWorkout ? "bg-orange-400 ring-1 ring-orange-300/50" :
-                        isToday ? "bg-[var(--input-bg)] ring-1 ring-white/20" :
-                        hasWorkout ? "bg-orange-500" :
-                        "bg-[var(--input-bg)]"
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
