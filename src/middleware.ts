@@ -1,15 +1,10 @@
-import { auth } from "@/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/auth.config";
 
-export default auth((req) => {
-  const isAuth = !!req.auth;
-  const isSignInPage = req.nextUrl.pathname === "/sign-in";
-
-  if (!isAuth && !isSignInPage) {
-    return Response.redirect(new URL("/sign-in", req.url));
-  }
-});
+// Use only the lightweight config here — no Prisma, no Google provider,
+// just JWT token checking. Keeps the Edge Function under the 1 MB limit.
+export const { auth: middleware } = NextAuth(authConfig);
 
 export const config = {
-  // Protect everything except Next.js internals and the auth API itself
   matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
 };

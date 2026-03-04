@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
+import { authConfig } from "@/auth.config";
 
 const ALLOWED_EMAILS = (process.env.ALLOWED_EMAILS ?? "")
   .split(",")
@@ -8,6 +9,7 @@ const ALLOWED_EMAILS = (process.env.ALLOWED_EMAILS ?? "")
   .filter(Boolean);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -15,10 +17,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async signIn({ user }) {
       if (!user.email || !ALLOWED_EMAILS.includes(user.email)) return false;
 
-      // First time the primary user (first in list) signs in:
+      // First time the primary user (first in ALLOWED_EMAILS) signs in:
       // claim all legacy records that have no userId yet (userId = "")
       if (user.email === ALLOWED_EMAILS[0]) {
         await prisma.workoutSession.updateMany({
@@ -33,8 +36,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return true;
     },
-  },
-  pages: {
-    signIn: "/sign-in",
   },
 });
