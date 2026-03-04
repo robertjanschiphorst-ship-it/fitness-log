@@ -15,6 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Support both Auth.js v5 naming (AUTH_GOOGLE_ID) and common alternatives
       clientId: process.env.AUTH_GOOGLE_ID ?? process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? process.env.GOOGLE_CLIENT_SECRET ?? "",
+      // Disable PKCE — the code verifier cookie is unreliable on Vercel serverless.
+      // Use a simple state check instead.
+      checks: ["state"],
     }),
   ],
   callbacks: {
