@@ -23,13 +23,13 @@ export default async function Home() {
   const allSets = await prisma.set.findMany({ select: { reps: true, weightKg: true } });
   const totalVolume = allSets.reduce((sum, s) => sum + s.reps * s.weightKg, 0);
 
-  // Heatmap: last 365 days of sessions
+  // WeekView: last 365 days of sessions, with IDs for clickable days
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-  const sessionDates = (await prisma.workoutSession.findMany({
+  const weekViewSessions = (await prisma.workoutSession.findMany({
     where: { startedAt: { gte: oneYearAgo } },
-    select: { startedAt: true },
-  })).map((s) => s.startedAt.toISOString().split("T")[0]);
+    select: { id: true, startedAt: true },
+  })).map((s) => ({ id: s.id, isoDate: s.startedAt.toISOString() }));
 
   const templateNames = await prisma.workoutTemplate.findMany({ select: { id: true, name: true } });
   const templateNameMap = new Map(templateNames.map((t) => [t.id, t.name]));
@@ -67,10 +67,10 @@ export default async function Home() {
           <ThemeToggle />
         </header>
 
-        {/* Consistency */}
+        {/* Consistency is key */}
         <section className="space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Consistency</h2>
-          <WeekView sessionDates={sessionDates} />
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-40)]">Consistency is key</h2>
+          <WeekView sessions={weekViewSessions} />
         </section>
 
         {/* Stats — compact single row */}
