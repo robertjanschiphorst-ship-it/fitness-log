@@ -25,3 +25,4 @@ export default defineConfig({
     url: process.env.TURSO_DATABASE_URL!,
   },
 });
+// deploy
