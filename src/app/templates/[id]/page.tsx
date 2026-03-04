@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { ExercisePicker } from "./ExercisePicker";
 import { StartSessionButton } from "./StartSessionButton";
 
+export const dynamic = 'force-dynamic';
+
 async function removeExercise(formData: FormData) {
   "use server";
   const templateExerciseId = String(formData.get("templateExerciseId") ?? "");

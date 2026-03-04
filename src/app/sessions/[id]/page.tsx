@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { LogSet } from "./LogSet";
 import { FinishWorkoutButton } from "./FinishWorkoutButton";
 
+export const dynamic = 'force-dynamic';
+
 type PrevSet = { setNumber: number; reps: number; weightKg: number; rpe: number | null };
 
 function volumeComparison(kg: number): { emoji: string; text: string } {

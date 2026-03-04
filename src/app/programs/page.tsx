@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import UseProgramButton from "./use-program-button";
 
+export const dynamic = 'force-dynamic';
+
 const GOAL_LABEL: Record<string, string> = {
   STRENGTH: "Strength",
   HYPERTROPHY: "Hypertrophy",

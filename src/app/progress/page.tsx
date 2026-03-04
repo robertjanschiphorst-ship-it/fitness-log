@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProgressChart } from "./ProgressChart";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProgressPage() {
   const sessionExercises = await prisma.sessionExercise.findMany({
     include: {

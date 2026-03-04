@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TemplateType } from "@prisma/client";
 
+export const dynamic = 'force-dynamic';
+
 async function createTemplate(formData: FormData) {
   "use server";
 

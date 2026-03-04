@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import UseProgramButton from "../use-program-button";
 
+export const dynamic = 'force-dynamic';
+
 const LEVEL_LABEL: Record<string, string> = {
   BEGINNER: "Beginner",
   INTERMEDIATE: "Intermediate",

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteTemplateButton } from "./DeleteTemplateButton";
 
+export const dynamic = 'force-dynamic';
+
 export default async function TemplatesPage() {
   const templates = await prisma.workoutTemplate.findMany({
     orderBy: { name: "asc" },
