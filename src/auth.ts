@@ -23,7 +23,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user }) {
-      console.log("[auth] signIn attempt:", user.email, "| allowed:", ALLOWED_EMAILS);
       if (!user.email || !ALLOWED_EMAILS.includes(user.email)) return false;
 
       // First time the primary user (first in ALLOWED_EMAILS) signs in:
