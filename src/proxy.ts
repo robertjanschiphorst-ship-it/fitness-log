@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 
-// next-auth/jwt is much smaller than the full NextAuth bundle,
-// keeping the Vercel proxy function well under the 1 MB limit.
-export default async function proxy(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Always allow: auth endpoints, sign-in page, migration route, Next.js internals
@@ -17,12 +14,12 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-  });
+  // Auth.js v5 stores the session in one of these cookies depending on HTTP/HTTPS
+  const hasSession =
+    request.cookies.has("__Secure-authjs.session-token") ||
+    request.cookies.has("authjs.session-token");
 
-  if (!token) {
+  if (!hasSession) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
