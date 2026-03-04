@@ -6,9 +6,10 @@ import { getToken } from "next-auth/jwt";
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always allow: auth endpoints, sign-in page, Next.js internals
+  // Always allow: auth endpoints, sign-in page, migration route, Next.js internals
   if (
     pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/migrate") ||
     pathname === "/sign-in" ||
     pathname.startsWith("/_next") ||
     pathname === "/favicon.ico"

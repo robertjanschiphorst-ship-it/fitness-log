@@ -29,14 +29,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // First time the primary user (first in ALLOWED_EMAILS) signs in:
       // claim all legacy records that have no userId yet (userId = "")
       if (user.email === ALLOWED_EMAILS[0]) {
-        await prisma.workoutSession.updateMany({
-          where: { userId: "" },
-          data: { userId: user.email },
-        });
-        await prisma.workoutTemplate.updateMany({
-          where: { userId: "" },
-          data: { userId: user.email },
-        });
+        try {
+          await prisma.workoutSession.updateMany({
+            where: { userId: "" },
+            data: { userId: user.email },
+          });
+          await prisma.workoutTemplate.updateMany({
+            where: { userId: "" },
+            data: { userId: user.email },
+          });
+        } catch (e) {
+          // Column may not exist yet if /api/migrate hasn't been run — don't block sign-in
+          console.warn("[auth] legacy claim skipped (migration not run yet?):", e);
+        }
       }
 
       return true;
