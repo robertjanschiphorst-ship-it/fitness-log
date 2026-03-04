@@ -1,0 +1,209 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Goal {
+  STRENGTH
+  HYPERTROPHY
+}
+
+enum TemplateType {
+  PUSH
+  PULL
+  LEGS
+  UPPER
+  LOWER
+  FULLBODY
+  OTHER
+}
+
+enum Equipment {
+  BARBELL
+  DUMBBELL
+  MACHINE
+  SMITH_MACHINE
+  CABLE
+  BODYWEIGHT
+  KETTLEBELL
+  OTHER
+}
+
+enum MovementPattern {
+  SQUAT
+  HINGE
+  HORIZONTAL_PUSH
+  VERTICAL_PUSH
+  HORIZONTAL_PULL
+  VERTICAL_PULL
+  CARRY
+  CORE
+  ISOLATION
+  OTHER
+}
+
+enum VolumeFeedback {
+  TOO_LOW
+  JUST_RIGHT
+  TOO_HIGH
+}
+
+enum ProgramLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model AppSettings {
+  id   Int  @id @default(1)
+  goal Goal @default(HYPERTROPHY)
+}
+
+model MuscleGroup {
+  id   String @id @default(cuid())
+  name String @unique
+
+  exercises ExerciseMuscleGroup[]
+}
+
+model Exercise {
+  id              String          @id @default(cuid())
+  name            String          @unique
+  equipment       Equipment
+  movementPattern MovementPattern
+  isLowerBody     Boolean
+  isCompound      Boolean
+  isGlobal        Boolean         @default(true)
+
+  muscleGroups            ExerciseMuscleGroup[]
+  templateLinks           TemplateExercise[]
+  sessionLinks            SessionExercise[]
+  programWorkoutExercises ProgramWorkoutExercise[]
+}
+
+model ExerciseMuscleGroup {
+  exerciseId    String
+  muscleGroupId String
+
+  exercise    Exercise    @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  muscleGroup MuscleGroup @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
+
+  @@id([exerciseId, muscleGroupId])
+}
+
+model WorkoutTemplate {
+  id           String       @id @default(cuid())
+  name         String
+  templateType TemplateType @default(OTHER)
+
+  exercises TemplateExercise[]
+}
+
+model TemplateExercise {
+  id         String @id @default(cuid())
+  templateId String
+  exerciseId String
+  sortOrder  Int
+
+  targetSets  Int
+  repRangeMin Int
+  repRangeMax Int
+
+  template WorkoutTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  exercise Exercise        @relation(fields: [exerciseId], references: [id])
+}
+
+model WorkoutSession {
+  id             String          @id @default(cuid())
+  templateId     String?
+  startedAt      DateTime        @default(now())
+  finishedAt     DateTime?
+  volumeFeedback VolumeFeedback?
+
+  exercises SessionExercise[]
+}
+
+model SessionExercise {
+  id         String @id @default(cuid())
+  sessionId  String
+  exerciseId String
+  sortOrder  Int
+
+  exerciseName String
+  targetSets   Int
+  repRangeMin  Int
+  repRangeMax  Int
+
+  session  WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exercise Exercise       @relation(fields: [exerciseId], references: [id])
+  sets     Set[]
+}
+
+model Set {
+  id                String @id @default(cuid())
+  sessionExerciseId String
+  setNumber         Int
+
+  reps     Int
+  weightKg Float
+  rpe      Int
+
+  sessionExercise SessionExercise @relation(fields: [sessionExerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionExerciseId, setNumber])
+}
+
+enum TrainingGoal {
+  STRENGTH
+  HYPERTROPHY
+  GENERAL
+}
+
+model Program {
+  id          String       @id @default(cuid())
+  name        String
+  goal        TrainingGoal @default(GENERAL)
+  daysPerWeek Int
+  isGlobal    Boolean      @default(true)
+  level       ProgramLevel @default(INTERMEDIATE)
+  summary     String?
+  details     String?
+
+  workouts ProgramWorkout[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProgramWorkout {
+  id        String @id @default(cuid())
+  programId String
+  dayNumber Int
+  title     String
+
+  program   Program                  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  exercises ProgramWorkoutExercise[]
+
+  @@unique([programId, dayNumber])
+}
+
+model ProgramWorkoutExercise {
+  id               String @id @default(cuid())
+  programWorkoutId String
+  sortOrder        Int
+
+  exerciseId  String
+  targetSets  Int
+  repRangeMin Int
+  repRangeMax Int
+  rpeTarget   Int? // optional
+
+  workout  ProgramWorkout @relation(fields: [programWorkoutId], references: [id], onDelete: Cascade)
+  exercise Exercise       @relation(fields: [exerciseId], references: [id])
+
+  @@unique([programWorkoutId, sortOrder])
+}
